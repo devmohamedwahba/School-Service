@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{%block title%}{{board.name}} {%endblock%}
+
+{% block content %}
+<div class="row m-4 " style="float: right;">
+    <div class="col-sm pr-5">
+        <a href="{% url 'export_csv' %}" class="btn btn-info">تحميل الملف Excel</a>
+    </div>
+    <div class="col-sm pr-5">
+        <a href="{% url 'export_pdf' %}" class="btn btn-info">تحميل الملف PDF</a>
+    </div>
+    <div class="col-sm">
+        <a href="{% url 'add_student' %}" class="btn btn-success">اضافه طالب </a>
+    </div>
+
+</div>
+
+<table class="table table-striped" dir="rtl" style="font-size: small;">
+    <thead class="thead-dark">
+    <tr>
+        <th>اسم الطالب</th>
+        <th>تاريخ الميلاد</th>
+        <th>السن في 1/10</th>
+        <th>المجموع</th>
+        <th>النسبه</th>
+        <th>مسح</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    {%for student in topics%}
+    <tr>
+        <td>{{student.name}}</td>
+        <td>{{student.birth_date|date:"Y-m-d"}}</td>
+        <td>{{student.age_calculated}}</td>
+        <td>{{student.total}}</td>
+        <td>{{student.total_percentage}}</td>
+        <td><a href="{% url 'student_remove' student.id %}" class="btn btn-danger">مسح</a></td>
+
+    </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+{% if topics.has_other_pages %}
+<nav aria-label="Topics pagination" class="mb-4">
+    <ul class="pagination">
+        {% if topics.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ topics.previous_page_number }}">Previous</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <span class="page-link">Previous</span>
+        </li>
+        {% endif %}
+
+        {% for page_num in topics.paginator.page_range %}
+        {% if topics.number == page_num %}
+        <li class="page-item active">
+            <span class="page-link">
+              {{ page_num }}
+              <span class="sr-only">(current)</span>
+            </span>
+        </li>
+        {% else %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+
+        {% if topics.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ topics.next_page_number }}">Next</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <span class="page-link">Next</span>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}

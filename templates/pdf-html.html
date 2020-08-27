@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        @page{
+        size:"A4";
+        margin:2.5cm 1.5cm 3.5cm 1.5cm;
+         @top-center{
+        content:"مدرسه ميت ربيعه"
+        }
+        @bottom-right{
+            content:"Page " counter(page)  " of " counter(pages);
+        }
+        }
+
+        th, td {
+  padding: 15px;
+}
+
+
+
+
+    </style>
+</head>
+<body>
+<table class="table" dir="rtl" style="font-size: small;">
+    <thead>
+    <tr>
+        <th>النسبه</th>
+        <th>المجموع</th>
+
+        <th>السن في 1/10</th>
+
+        <th>تاريخ الميلاد</th>
+
+
+        <th>اسم الطالب</th>
+
+
+    </tr>
+    </thead>
+    <tbody>
+    {%for student in students%}
+    <tr>
+        <td>{{student.total_percentage}}</td>
+        <td>{{student.total}}</td>
+
+        <td>{{student.age_calculated}}</td>
+
+        <td>{{student.birth_date|date:"Y-m-d"}}</td>
+
+        <td>{{student.name}}</td>
+
+    </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+
+
+</body>
+</html>
